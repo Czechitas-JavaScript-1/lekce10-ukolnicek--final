@@ -69,7 +69,7 @@ function zobrazUkoly() {
 
 			// zavoláme funkci, která nám pro daný úkol vygeneruje HTML prvky
 			// jako parametry jí předáme index v poli, text úkolu a důležitost
-			let ukol = vytvorPrvekUkolu(i, ukoly[i].popis, ukoly[i].dulezitost);
+			let ukol = vytvorPrvekUkolu(i, ukoly[i].popis, ukoly[i].dulezitost, ukoly[i].datum);
 
 			// vytvořený prvek, který se vrátí z funkce, připojíme do stránky do seznamu úkolů
 			seznam.appendChild(ukol);
@@ -81,7 +81,7 @@ function zobrazUkoly() {
 
 // funkce, která vytvoří HTML prvky jednoho úkolu
 // jako parametry očekává index úkolu v poli, popis a důležitost úkolu
-function vytvorPrvekUkolu(index, popis, dulezitost) {
+function vytvorPrvekUkolu(index, popis, dulezitost, datum) {
 	/*
 	Chceme, aby daný prvek v HTML vypadal následovně:
 	<li>
@@ -96,7 +96,7 @@ function vytvorPrvekUkolu(index, popis, dulezitost) {
 	let liElement = document.createElement('li');
 
 	// elementu nastavíme text s popisem a důležitostí úkolu
-	liElement.textContent = popis + ' - (' + dulezitost + ' důležitost) ';
+	liElement.textContent = popis + ' - (' + dulezitost + ' důležitost, udělat do ' + datum + ')';
 
 	// vytvoříme tlačítko pro smazání úkolu
 	let buttonElement = document.createElement('button');
@@ -137,6 +137,7 @@ function pridejUkol() {
 	// získáme hodnoty z polí formuláře
 	let popis = document.querySelector('#popis').value;
 	let dulezitost = document.querySelector('#dulezitost').value;
+	let datum = document.querySelector('#datum').value;
 
 	// pokud není zadaný text úkolu, tak oznámíme chybu a opustíme funkci
 	if (popis === '') {
@@ -146,11 +147,16 @@ function pridejUkol() {
 		// můžeme to tedy použít pro opuštění funkce uprostřed jejího kódu
 		return;
 	}
+	if (datum === '') {
+		alert('Prosím, zadej datum ukončení úkolu.');
+		return;
+	}
 
 	// z hodnot vytvoříme objekt
 	let ukol = {};
 	ukol.popis = popis;
 	ukol.dulezitost = dulezitost;
+	ukol.datum = datum;
 
 	// a tento objekt přidáme na konec pole
 	// kdybychom ho chtěli přidat na začátek, použili bychom místo push() metodu unshift()
